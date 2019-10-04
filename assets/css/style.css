@@ -1,0 +1,6 @@
+body{
+	background: #EAEBEF;
+}
+body .wrap *{
+	box-sizing: border-box;
+}
