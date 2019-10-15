@@ -30,15 +30,13 @@
 		}
 	}
 
-	function quecodig_support_data($code = false, $public = false){
+	function quecodig_support_data($code = false, $public = false, $cron = true){
 		global $wp_version;
 		if(($code == false) && ($public == false) && (get_option('quecodig_code') != "0") && (get_option('quecodig_public') != "0")){
 			$code = get_option('quecodig_code');
 			$public = get_option('quecodig_public');
-		}else{
-			wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
 		}
-		if(check_admin_referer("quecodig_action_nonce")){
+		if( ($cron === true) || ( check_admin_referer("quecodig_action_nonce") ) ){
 			$args = array(
 				'method' => 'POST',
 				'timeout' => 45,
@@ -54,16 +52,30 @@
 			if(!is_wp_error($response) && ($response['response']['code'] == 200 || $response['response']['code'] == 201)) {
 				$response = json_decode( wp_remote_retrieve_body($response), true );
 				if($response["success"] === true){
-					/*update_option("quecodig_sub", 1);
+					update_option("quecodig_sub", 1);
 					update_option("quecodig_code", $code);
-					update_option("quecodig_public", $public);*/
-					//wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) ) );
-					die();
+					update_option("quecodig_public", $public);
+					if($cron === false){
+						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) ) );
+						die();
+					}
+				}else if(($response["success"] === false) && ($response["error"]) === false){
+					update_option("quecodig_sub", 2);
+					update_option("quecodig_code", $code);
+					update_option("quecodig_public", $public);
+					if($cron === false){
+						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'vencido' => true), admin_url( 'admin.php' ) ) );
+						die();
+					}
 				}else{
-					wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
+					if($cron === false){
+						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
+					}
 				}
 			}else{
-				wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
+				if($cron === false){
+					wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
+				}
 			}
 		}
 	}
@@ -75,12 +87,12 @@
 				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 			}
 			if(isset($_GET["force_support"])){
-				quecodig_support_data();
+				quecodig_support_data(false, false, false);
 			}
 			if(isset($_POST["code"]) && isset($_POST["public"])){
 				$code = esc_sql($_POST["code"]);
 				$public = esc_sql($_POST["public"]);
-				quecodig_support_data($code, $public);
+				quecodig_support_data($code, $public, false);
 				if( ! wp_next_scheduled( 'quecodig_support_data' ) ) {
 					wp_schedule_event( current_time( 'timestamp' ), 'Monthly', 'quecodig_support_data' );
 				}

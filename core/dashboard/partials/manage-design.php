@@ -1,6 +1,6 @@
 <?php
-$theme = wp_get_theme();
-$pages = wp_count_posts( 'page' );
+	$theme = wp_get_theme();
+	$pages = wp_count_posts( 'page' );
 ?>
 <h4 class="title title--density-cozy title-manage-design title--level-4 typography typography--weight-light with-color with-color--color-darkest sg-margin-top-large">
 	<?php esc_html_e( 'Customize'); ?>

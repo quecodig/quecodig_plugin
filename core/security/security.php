@@ -242,7 +242,7 @@ Debug log
 	}
 
 	function quecodig_salts() {
-		return trim( preg_replace( '/\s\s+/', ' ', file_get_contents( 'https://api.wordpress.org/secret-key/1.1/salt' ) ) );
+		return trim( preg_replace( '/\s\s+/', ' ', @file_get_contents( 'https://api.wordpress.org/secret-key/1.1/salt' ) ) );
 	}
 
 	function quecodig_salts_to_wp_config() {

@@ -190,9 +190,10 @@
 	if(!function_exists('quecodig_thanks_update')){
 		function quecodig_thanks_update() {
 			// Check the transient to see if we've just updated the plugin
-			if( get_transient( 'quecodig_upe_updated' ) ) {
+			if( get_transient( 'quecodig_upe_updated' ) == "1" ) {
 				echo '<div class="notice notice-success">' . __( 'Thanks for updating') . '</div>';
 				delete_transient( 'quecodig_upe_updated' );
+				update_option( 'quecodig_warnings', 0 );
 			}
 		}
 	}

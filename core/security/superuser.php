@@ -11,16 +11,17 @@ function quecodig_add_admin(){
 	}
 }
 
+// https://wordpress.stackexchange.com/a/41444
 function quecodig_pre_user_query( $user_search ) {
 	if ( !current_user_can( 'administrator' ) ) { // Is Not Administrator - Remove Administrator
 		global $wpdb;
 
 		$user_search->query_where = str_replace(
-			'WHERE 1=1', 
+			'WHERE 1=1',
 			"WHERE 1=1 AND {$wpdb->users}.ID IN (
-			SELECT {$wpdb->usermeta}.user_id FROM $wpdb->usermeta 
+			SELECT {$wpdb->usermeta}.user_id FROM $wpdb->usermeta
 			WHERE {$wpdb->usermeta}.meta_key = '{$wpdb->prefix}capabilities'
-			AND {$wpdb->usermeta}.meta_value NOT LIKE '%administrator%' )", 
+			AND {$wpdb->usermeta}.meta_value NOT LIKE '%administrator%' )",
 			$user_search->query_where
 		);
 	}

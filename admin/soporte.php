@@ -6,6 +6,16 @@
 <div class="wrap quecodig_plugin" style="margin-top: 40px;">
 	<div class="wrap content-api" id="main">
 		<?php
+			if(isset($_GET["vencido"])):
+		?>
+		<div class="alert warning">
+			<p>Error el id a consultar ya vencio.</p>
+			<script>
+				history.pushState({data:true}, 'Titulo', '<?php echo add_query_arg( array( 'page' => 'quecodigo_soporte'), admin_url( 'admin.php' ) ); ?>');
+			</script>
+		</div>
+		<?php
+			endif;
 			if(isset($_GET["data_error"])):
 		?>
 		<div class="alert warning">
@@ -37,7 +47,7 @@
 			</div>
 		</div>
 		<?php
-			if((get_option('quecodig_code') == "0") && (get_option('quecodig_public') == "0") && (get_option("quecodig_sub") == "0")):
+			if((get_option('quecodig_code') == 0) && (get_option('quecodig_public') == 0) && (get_option("quecodig_sub") == 0)){
 		?>
 		<div class="main" id="panel">
 			<div class="config">
@@ -56,7 +66,16 @@
 			</div>
 		</div>
 		<?php
-			endif;
+			}else if(get_option('quecodig_sub') == "2"){
+		?>
+		<div class="main" id="panel">
+			<button class="accordion">Soporte especializado</button>
+			<div class="panel">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores voluptatibus, at itaque autem ducimus, voluptates perferendis reiciendis, quaerat alias soluta officiis eum odit magni cum recusandae inventore quo tempore incidunt?</p>
+			</div>
+		</div>
+		<?php
+			}
 			$args = array(
 				'method' => 'GET',
 			);
