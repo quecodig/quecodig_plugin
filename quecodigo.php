@@ -3,12 +3,12 @@
 	Plugin Name: Soporte By Qué Código
 	Plugin URI: https://www.desarrollo.quecodigo.com/wordpress/quecodigo/
 	Description: Qué Código es un conjunto de herramientas ligeras y sencillas que facilitan el desarrollo y uso de WordPress, funciones que incluyen <strong>Estilos, Seguridad, Optimización, seguimiento con Google Analytics y soporte</strong>.
-	Version: 1.6.3.3
+	Version: 1.6.3.5
 	Author: Qué Código
 	Author URI: https://www.quecodigo.com
 	License: GPL2
 	Requires at least: 4.0
-	Tested up to: 5.2.2
+	Tested up to: 5.2.4
 	Text Domain: QCText
 	Domain Path: /languages/
 	*/
@@ -23,7 +23,7 @@
 
 	//Init
 	if( ! defined( 'PLUGIN_VERSION' ) ){
-		define("PLUGIN_VERSION", "1.6.3.3");
+		define("PLUGIN_VERSION", "1.6.3.5");
 	}
 	// Define "FILE" del plugin
 	if ( ! defined( 'QC_PLUGIN_FILE' ) ) {

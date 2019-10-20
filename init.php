@@ -7,9 +7,10 @@
 	if(!function_exists('quecodig_menu')){
 		function quecodig_menu(){
 			//Page title
-			$page_title = "Asistente Qué Código || By QuéCódigo";
+			$page_title = "Asistente Qué Código";
 			//Menu section title
-			$warning_count = get_option( 'quecodig_warnings' );
+			//$warning_count = get_option( 'quecodig_warnings' );
+			$warning_count = 0;
 			if($warning_count > 0){
 				$menu_title =  sprintf( __( 'Soporte %s' ), "<span class='update-plugins count-$warning_count' title='notify'><span class='update-count'>" . number_format_i18n($warning_count) . "</span></span>" );
 			}else{
@@ -36,7 +37,7 @@
 			$code = get_option('quecodig_code');
 			$public = get_option('quecodig_public');
 		}
-		if( ($cron === true) || ( check_admin_referer("quecodig_action_nonce") ) ){
+		if( ($cron == true) || ( check_admin_referer("quecodig_action_nonce") ) ){
 			$args = array(
 				'method' => 'POST',
 				'timeout' => 45,
@@ -55,25 +56,23 @@
 					update_option("quecodig_sub", 1);
 					update_option("quecodig_code", $code);
 					update_option("quecodig_public", $public);
-					if($cron === false){
+					if($cron == false){
 						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) ) );
-						die();
 					}
 				}else if(($response["success"] === false) && ($response["error"]) === false){
 					update_option("quecodig_sub", 2);
 					update_option("quecodig_code", $code);
 					update_option("quecodig_public", $public);
-					if($cron === false){
+					if($cron == false){
 						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'vencido' => true), admin_url( 'admin.php' ) ) );
-						die();
 					}
 				}else{
-					if($cron === false){
+					if($cron == false){
 						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
 					}
 				}
 			}else{
-				if($cron === false){
+				if($cron == false){
 					wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
 				}
 			}
@@ -88,6 +87,9 @@
 			}
 			if(isset($_GET["force_support"])){
 				quecodig_support_data(false, false, false);
+			}
+			if(isset($_GET["force_support"])){
+				quecodig_update_notify();
 			}
 			if(isset($_POST["code"]) && isset($_POST["public"])){
 				$code = esc_sql($_POST["code"]);
@@ -144,4 +146,4 @@
 	foreach ($core_inc as $file) {
 		require QC_PLUGIN_PATH ."core/". $file."/init.php";
 	}
-	//require QC_PLUGIN_PATH ."core/plugin_update.php";
+	require QC_PLUGIN_PATH ."core/plugin_update.php";

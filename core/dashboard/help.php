@@ -23,7 +23,7 @@
 						'id'      => 'sp_support',
 						'title'   => 'Soporte Avanzado',
 						'callback' => function ( $screen, $tab ) {
-							echo '<p>Para soporte, envíanos un mail a través de soporte@quecodigo.com</p><br><a class="btn primary" href="'.wp_nonce_url(add_query_arg( array( 'page' => 'quecodigo_soporte', 'force_support' => "true" ), admin_url( 'admin.php' )), 'quecodig_action_nonce').'">Verificar soporte</a>';
+							echo '<p>Para soporte, envíanos un mail a través de soporte@quecodigo.com</p><br><a class="btn primary" href="'.wp_nonce_url(add_query_arg( array( 'page' => 'quecodigo_soporte', 'force_support' => "true" ), admin_url( 'admin.php' )), 'quecodig_action_nonce').'">Verificar soporte</a><a class="btn primary" href="'.wp_nonce_url(add_query_arg( array( 'page' => 'quecodigo_soporte', 'force_support' => "true" ), admin_url( 'admin.php' )), 'quecodig_action_nonce').'">Forzar actualización</a>';
 						}
 					)
 				);

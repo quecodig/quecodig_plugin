@@ -113,7 +113,7 @@
 					$res->icons = array(
 						"svg" => plugins_url( "assets/img/logo-azul.svg" , QC_PLUGIN_FILE),
 					);
-					update_option( 'quecodig_warnings', 1);
+					//update_option( 'quecodig_warnings', 1);
 				}
 
 			}
@@ -134,28 +134,40 @@
 						delete_transient( 'quecodig_upgrade' );
 						update_option( 'quecodig_warnings', 0 );
 						set_transient( 'quecodig_upe_updated', 1 );
-
-						// Versiones anteriores.
-						if( ! wp_next_scheduled( 'quecodig_salts_to_wp_config' ) ) {
-							wp_schedule_event( current_time( 'timestamp' ), 'Monthly', 'quecodig_salts_to_wp_config' );
-						}
-						//v1.6.2.5
-						if(!empty(get_option(QC_WPADMIN_OPTION)) && !empty(get_option(QC_ENABLED_OPTION))){
-							delete_option(QC_WPADMIN_OPTION);
-							delete_option(QC_ENABLED_OPTION);
-							unset($_COOKIE[COOKIE_HC_WPADMIN]);
-							add_option('quecodig_slug_link', 'panel-administracion', '', 'yes' );
-						}
-						//v1.6.3.3
-						if(empty(get_option(quecodig_sub))){
-							add_option('quecodig_sub', 0);
-						}
 					}
 				}
 			}
 		}
 	}
 	add_action( 'upgrader_process_complete', 'quecodig_after_update', 10, 2 );
+
+	function quecodig_loadUpdate(){
+		if (get_transient('quecodig_upe_updated') && current_user_can('update_plugins')) {
+			// if there is updated transient
+			// any background update process can be run here.
+			// write your new version of code that will be run after updated the plugin here.
+			delete_transient( 'quecodig_upgrade' );
+			update_option( 'quecodig_warnings', 0 );
+			delete_transient( 'quecodig_upe_updated', 1 );
+
+			// Versiones anteriores.
+			if( ! wp_next_scheduled( 'quecodig_salts_to_wp_config' ) ) {
+				wp_schedule_event( current_time( 'timestamp' ), 'Monthly', 'quecodig_salts_to_wp_config' );
+			}
+			//v1.6.2.5
+			if(!empty(get_option(QC_WPADMIN_OPTION)) && !empty(get_option(QC_ENABLED_OPTION))){
+				delete_option(QC_WPADMIN_OPTION);
+				delete_option(QC_ENABLED_OPTION);
+				unset($_COOKIE[COOKIE_HC_WPADMIN]);
+				add_option('quecodig_slug_link', 'panel-administracion', '', 'yes' );
+			}
+			//v1.6.3.3
+			if(empty(get_option(quecodig_sub))){
+				add_option('quecodig_sub', 0);
+			}
+		}// endif;
+	}// redirectToUpdatePlugin
+	add_action('plugins_loaded', 'quecodig_loadUpdate');
 
 	if(!function_exists('quecodig_update_notify')){
 		function quecodig_update_notify() {
