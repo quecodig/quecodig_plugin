@@ -9,9 +9,6 @@
 	include (QC_PLUGIN_PATH ."core/customize/options.php");
 
 	//*****Text*****//
-	//add_filter('gettext', 'quecodig_translate_words');
-	//add_filter('ngettext', 'quecodig_translate_words');
-
 	add_action( 'admin_menu', 'quecodig_rename_menu_woo', 999 );
 
 	//*****Styles*****//
@@ -36,8 +33,6 @@
 	//*****Options*****//
 	add_action( 'login_enqueue_scripts', 'quecodig_logo' );
 
-	add_action('wp_dashboard_setup', 'quecodig_dashboard_widgets');
-
 	add_filter( 'login_headerurl', 'quecodig_logo_url' );
 
 	add_filter( 'login_headertext', 'quecodig_url_title' );
@@ -54,14 +49,13 @@
 	add_action( 'wp_before_admin_bar_render', 'quecodig_wp_remove', 0 );
 
 	add_action('admin_bar_menu', 'quecodig_toolbar', 999);
-	//add_action('admin_bar_menu', 'quecodig_notications', 999);
 
 	add_action( 'wp_before_admin_bar_render', 'quecodig_remove_links', 999 );
 
 	add_action( 'admin_footer', function(){
 	?>
 	<script>
-		jQuery("#setting-error-bigcart, #ga_widget_error").remove();
+		jQuery("#setting-error-bigcart, #ga_widget_error, #vc_license-activation-notice, .updated.woocommerce-message").remove();
 	</script>
 	<?php
 	});

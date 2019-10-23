@@ -3,7 +3,7 @@
 	Plugin Name: Soporte By Qué Código
 	Plugin URI: https://www.desarrollo.quecodigo.com/wordpress/quecodigo/
 	Description: Qué Código es un conjunto de herramientas ligeras y sencillas que facilitan el desarrollo y uso de WordPress, funciones que incluyen <strong>Estilos, Seguridad, Optimización, seguimiento con Google Analytics y soporte</strong>.
-	Version: 1.6.3.5
+	Version: 1.6.3.6
 	Author: Qué Código
 	Author URI: https://www.quecodigo.com
 	License: GPL2
@@ -23,7 +23,7 @@
 
 	//Init
 	if( ! defined( 'PLUGIN_VERSION' ) ){
-		define("PLUGIN_VERSION", "1.6.3.5");
+		define("PLUGIN_VERSION", "1.6.3.6");
 	}
 	// Define "FILE" del plugin
 	if ( ! defined( 'QC_PLUGIN_FILE' ) ) {
@@ -31,7 +31,6 @@
 	}
 	if ( ! defined( 'PLUGIN_API' ) ) {
 		define("PLUGIN_API", "https://www.api.quecodigo.com/plugins/quecodigo/");
-		//define("PLUGIN_API", "http://localhost/iwant/api/plugins/quecodigo/");
 	}
 	if( ! defined( 'QC_PLUGIN_PATH' ) ){
 		define('QC_PLUGIN_PATH', realpath( plugin_dir_path( QC_PLUGIN_FILE ) ) . '/' );
@@ -98,3 +97,10 @@
 			flush_rewrite_rules();
 		}
 	);
+
+	function mode_maintenance(){
+		if(!current_user_can('edit_themes') || !is_user_logged_in()){
+			wp_die('<div class="main-container" style="display: table;width: 100%;height: 100%;"> <div class="main-content" style="display: table-cell;vertical-align:middle;"> <div class="main-image"> <img src="https://www.quecodigo.com/img/logo-grande.svg" alt="Logo QuéCódigo" style="margin: 30px auto;display: block;max-width: 600px;width: 100%;"> </div> <div class="content-wrapper" style="color: #000;overflow: hidden;padding: 30px;"> <h1 style="text-align: center;margin-top: 0;">Sitio en construcción!</h1> <p style="text-align: center;margin-bottom: 5px;margin-top: 0;">Este sitio estará disponible pronto.</p> <p style="text-align: center;margin-bottom: 5px;margin-top: 0;">¿Quieres saber de nostros? preguntanos en <a href="https://www.quecodigo.com" target="_blank" Style="color:steelblue;">@QuéCódigo</a>.</p> </div> </div></div>', 'Sitio en Mantenimiento', array( ‘response’ => 503 )); 
+		}
+	}
+	//add_action('init', 'mode_maintenance');

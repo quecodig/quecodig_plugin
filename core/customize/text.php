@@ -2,23 +2,6 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Bloquear acceso de manera directa.
 	}
-	//Textos traducidos
-	if(!function_exists("quecodig_translate_words")){
-		function quecodig_translate_words( $translated ) {
-			$words = array(
-				// 'palabra a traducir' = > 'traducción'
-				'WooCommerce' => 'Tienda',
-				'WordPress' => 'Sistema',
-				'Categories' => 'Categorias',
-				'Add Portfolio' => 'Añadir portafolio',
-				'Search Portfolio' => 'Buscar portafolio',
-				'All Portfolios' => 'Todos los portafolios',
-				'Portfolios' => 'Portafolios',
-			);
-			$translated = str_ireplace(  array_keys($words),  $words,  $translated );
-			return $translated;
-		}
-	}
 
 	if(!function_exists('quecodig_rename_menu_woo')){
 		function quecodig_rename_menu_woo(){

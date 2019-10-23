@@ -9,9 +9,6 @@
 			flush_rewrite_rules();
 			if ($current_user->ID != 1) {
 				//Desactivar las actualizaciones
-				#Plugins
-				//remove_action('load-update-core.php', 'wp_update_plugins');
-				//add_filter('pre_site_transient_update_plugins', '__return_null');
 				#Themes
 				remove_action('load-update-core.php', 'wp_update_themes');
 				#Updates Core

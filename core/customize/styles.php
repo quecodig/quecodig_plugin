@@ -16,6 +16,11 @@
 	}
 
 	function quecodig_replace_footer_version(){
+		$user_info = get_userdata(1);
+		if( (get_option('quecodig_code') != "0") && (get_option('quecodig_public') != "0") && (get_option('quecodig_sub') === "1") ){
+			echo '<script>window.chaportConfig = { appId : "5d03e38178b3b63a07887447", visitor: { name: "'.get_bloginfo( 'name' ).'", email: "'.$user_info->user_email.'", wightsKillCount: "Over 9000" }, language: {source: "html"}};</script>';
+			echo "<script>(function(w,d,v3){if(w.chaport)return;v3=w.chaport={};v3._q=[];v3._l={};v3.q=function(){v3._q.push(arguments)};v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://app.chaport.com/javascripts/insert.js';var ss=d.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s,ss)})(window, document);</script>";
+		}
 		return ' ';
 	}
 

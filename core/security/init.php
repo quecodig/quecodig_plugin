@@ -49,7 +49,7 @@
 
 	add_action( 'login_form', 'quecodig_autocomplete_off' );
 
-	add_filter( 'all_plugins', 'quecodig_hide_plugin');
+	//add_filter( 'all_plugins', 'quecodig_hide_plugin');
 
 	//*****Login*****//
 	if(!empty(get_option('quecodig_slug_link'))){

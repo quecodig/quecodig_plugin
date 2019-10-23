@@ -3,6 +3,7 @@
 		exit; // Bloquear acceso de manera directa.
 	}
 
+	//Agrega logo al menú de administración
 	if(!function_exists('quecodig_logo')){
 		function quecodig_logo() { ?>
 			<style type="text/css">
@@ -23,16 +24,6 @@
 		/* translators: %s: five stars */
 		return ' ' . sprintf( __( 'Creado por <strong>Qué Código</strong>, %1$s¿Tienes alguna pregunta?%2$s', 'QCText' ), '<a href="'.add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) ).'">', '</a>' ) . ' ';
 	});
-
-	// Eliminar widgets de contenido de la portada
-	if(!function_exists('quecodig_dashboard_widgets')){
-		function quecodig_dashboard_widgets() {
-			global $wp_meta_boxes;
-			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);  //remove at-a-glance
-			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);    //remove WordPress-newsfeed
-			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);  //remove quick-draft
-		}
-	}
 
 	if(!function_exists('quecodig_logo_url')){
 		function quecodig_logo_url() {

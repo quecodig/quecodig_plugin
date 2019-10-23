@@ -11,13 +11,3 @@
 
 	// Inject plugin information into the API calls.
 	add_filter( 'plugins_api', 'quecodig_mul_plugins_api' , 10, 3 );
-
-	if ( is_admin() ) {
-		$license_manager = new Wp_License_Manager_Client(
-			'wp-arduino',
-			'Arduino-PA',
-			'wp-arduino',
-			'https://www.desarrollo.quecodigo.com/wordpress/',
-			'theme'
-		);
-	}

@@ -112,7 +112,6 @@
 				<div class="info-log">
 					<h2 class="title">Solicitar Soporte.</h2>
 					<p>Si tienes problemas tecnicos con tu sitio web, hemos preparado un medio por el cual podemos brindarte ayuda y solucionar tu problema.</p>
-					<!-- <span style="color: red">No dejar activa esta opción, ya que puede contener fallos de seguridad grabes para tu sitio.</span> -->
 					<a onclick="window.chaport.open();" style="cursor:pointer" class="btn">Abrir chat</a>
 				</div>
 			</div>
