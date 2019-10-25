@@ -76,29 +76,6 @@
 		</div>
 		<?php
 			}
-			$args = array(
-				'method' => 'GET',
-			);
-			$response = wp_remote_request( PLUGIN_API.'request.php', $args );
-			if(!is_wp_error($response) && ($response['response']['code'] == 200 || $response['response']['code'] == 201)) {
-				$body = json_decode( wp_remote_retrieve_body( $response ) );
-				foreach ( $body as $key) {
-					$content = preg_replace("/\[br\]/is", "<br>", $key->content);
-		?>
-		<div class="main" id="panel">
-			<button class="accordion"><?=$key->title?></button>
-			<div class="panel">
-				<p><?=$content?></p>
-				<div class="content-video">
-					<div class="hs-responsive-embed hs-responsive-embed-youtube"><iframe src="<?=$key->video?>?rel=0" frameborder="0" allowfullscreen></iframe></div>
-				</div>
-			</div>
-		</div>
-		<?php
-				}
-			}else{
-				echo '<div class="main"><center><h2 style="color: red;">Error al mostrar los datos</h2><p>Si estas en una versión local, comprueba que tienes conexión a Internet.</p></center></div>';
-			}
 			if((get_option('quecodig_code') != "0") && (get_option('quecodig_public') != "0") && (get_option("quecodig_sub") == "1")):
 		?>
 		<div class="main" id="panel">
@@ -119,5 +96,78 @@
 		<?php
 			endif;
 		?>
+		<div class="boxes-filter">
+			<ul class="list-unstyled row filter">
+				<li class="col-md active" data-filter="all">Todos</li>
+				<li class="col-md" data-filter="panel">Panel</li>
+				<li class="col-md" data-filter="post">Entradas</li>
+				<li class="col-md" data-filter="ecommerce">Tienda</li>
+				<li class="col-md" data-filter="support">Soporte</li>
+				<li class="col-md" data-filter="users">Usuarios</li>
+			</ul>
+		</div>
+		<div class="boxes">
+			<?php
+				$args = array(
+					'method' => 'GET',
+				);
+				$response = wp_remote_request( PLUGIN_API.'request.php', $args );
+				if(!is_wp_error($response) && ($response['response']['code'] == 200 || $response['response']['code'] == 201)) {
+					$body = json_decode( wp_remote_retrieve_body( $response ) );
+					if(!empty($body)){
+						foreach ($body as $key) {
+							$content = preg_replace("/\[br\]/is", "<br>", $key->content);
+			?>
+			<div class="box" data-video="<?=$key->type?>">
+				<div class="content-video">
+					<div class="hs-responsive-embed">
+						<iframe src="<?=$key->video?>?rel=0" frameborder="0" allowfullscreen></iframe>
+					</div>
+				</div>
+				<div class="description">
+					<h2><?=$key->title?></h2>
+					<p><?=$content?></p>
+				</div>
+			</div>
+			<?php
+						}
+					}else{
+						echo '<div class="main"><center><h2 style="color: red;">Aun no tenemos videos disponibles</h2></center></div>';
+					}
+				}else{
+					echo '<div class="main"><center><h2 style="color: red;">Error al mostrar los datos</h2><p>Si estas en una versión local, comprueba que tienes conexión a Internet.</p></center></div>';
+				}
+			?>
+		</div>
 	</div>
 </div>
+<script>
+	(function($) {
+		'use strict';
+		var $filters = $('.filter [data-filter]'),
+		$boxes = $('.boxes [data-video]');
+
+		$filters.on('click', function(e) {
+			e.preventDefault();
+			var $this = $(this);
+
+			$filters.removeClass('active');
+			$this.addClass('active');
+
+			var $filterVideo = $this.attr('data-filter');
+
+			if ($filterVideo == 'all') {
+				$boxes.removeClass('is-animated')
+				.fadeOut().promise().done(function() {
+					$boxes.addClass('is-animated').fadeIn();
+				});
+			} else {
+				$boxes.removeClass('is-animated')
+				.fadeOut().promise().done(function() {
+					$boxes.filter('[data-video = "' + $filterVideo + '"]')
+					.addClass('is-animated').fadeIn();
+				});
+			}
+		});
+	})(jQuery);
+</script>

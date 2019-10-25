@@ -203,9 +203,4 @@
             }
         }
     };
-
-    $(document).ready(function(){
-        document.getElementById('ga-widget-trigger').click();
-    });
-
 })(jQuery);

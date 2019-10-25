@@ -22,5 +22,6 @@
 		// Plugin exceptions
 		// Also see _theme-alerts.scss
 		.not( '#gadwp-notice, .rs-update-notice-wrap' );
+		document.getElementById('ga-widget-trigger').click();
 	});
 </script>

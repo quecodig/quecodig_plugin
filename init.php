@@ -67,6 +67,9 @@
 						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'vencido' => true), admin_url( 'admin.php' ) ) );
 					}
 				}else{
+					update_option("quecodig_sub", 0);
+					update_option("quecodig_code", 0);
+					update_option("quecodig_public", 0);
 					if($cron == false){
 						wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte', 'data_error' => 'true' ), admin_url( 'admin.php' ) ) );
 					}
