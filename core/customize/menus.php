@@ -69,7 +69,7 @@
 				remove_menu_page( 'options-general.php' );        //Settings
 				remove_menu_page( 'edit.php?post_type=elementor_library' );
 				remove_menu_page( 'edit.php?post_type=elementor-hf' );
-
+				remove_menu_page( 'edit.php?post_type=portfolio' );
 				remove_submenu_page('index.php', 'update-core.php');
 				remove_submenu_page('themes.php', 'theme-editor.php');
 				remove_submenu_page('themes.php', 'widgets.php');

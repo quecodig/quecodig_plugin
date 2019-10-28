@@ -49,7 +49,7 @@
 		'order_by' => 'quantity DESC',
 		'order_types' => wc_get_order_types('order_count'),
 		'filter_range' => TRUE,
-		'order_status' => array('completed'),
+		'order_status' => array('epayco-processing'),
 	));
 
 	function od_dashboard_woo() {

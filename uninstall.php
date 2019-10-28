@@ -36,9 +36,3 @@ delete_option('quecodig_warnings');
 delete_option('quecodig_public');
 delete_option('quecodig_code');
 delete_option('quecodig_sub');
-
-if(!empty(get_option(QC_WPADMIN_OPTION)) && !empty(get_option(QC_ENABLED_OPTION))){
-	delete_option(QC_WPADMIN_OPTION);
-	delete_option(QC_ENABLED_OPTION);
-	unset( $_COOKIE[COOKIE_HC_WPADMIN] );
-}

@@ -89,7 +89,7 @@
 							<label> Slug:</label>
 							<input class="form-control" type="text" value="<?php echo get_option('quecodig_slug_link','');?>" name = "slug" class="slug">
 						</div>
-						<div class="row2">Url actual:  <b><?php echo site_url(); ?>?<?php echo get_option('quecodig_slug_link','');?></b></div>
+						<div class="row2">Url actual:  <b><?php echo site_url(); ?>/?<?php echo get_option('quecodig_slug_link','');?></b></div>
 						<div class="form-group"><input class="form-control btn" type="submit" class="submit_admin" value="Guardar"></div>
 					</form>
 				</div>
