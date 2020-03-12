@@ -185,6 +185,7 @@
 		}
 	}
 	add_action( 'admin_footer', function(){
+		quecodig_update_notify();
 		if( ! wp_next_scheduled( 'quecodig_update_notify' ) ) {
 			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'quecodig_update_notify' );
 		}

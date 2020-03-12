@@ -20,7 +20,11 @@
 		
 		if( ( strpos($_SERVER['REQUEST_URI'], $EHL_slug) === false  ) &&
 			( strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false  ) ){
-			wp_safe_redirect( home_url( '404' ), 302 );
+			if(is_user_logged_in()){
+				wp_safe_redirect( home_url( 'wp-admin' ), 302 );
+			}else{
+				wp_safe_redirect( home_url( '404' ), 302 );
+			}
 			exit();
 		}
 	}
@@ -35,10 +39,8 @@
 	function quecodig_login_init(){
 		$EHL_slug =  get_option('quecodig_slug_link');
 		if(parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY) == $EHL_slug ){
-
 			wp_safe_redirect(home_url("wp-login.php?$EHL_slug&redirect=false"));
 			exit();
-
 		}
 	}
 
@@ -77,6 +79,7 @@
 
 		}
 
+		$slug = get_option('quecodig_slug_link','');
 		$nonce = wp_create_nonce('quecodig_hide');
 	?>
 	<div class="wrap quecodig_plugin" style="margin-top: 40px;">
@@ -87,9 +90,9 @@
 					<form action="admin.php?page=quecodig_hide&_wpnonce=<?php echo $nonce; ?>" method="POST">
 						<div class="form-group">
 							<label> Slug:</label>
-							<input class="form-control" type="text" value="<?php echo get_option('quecodig_slug_link','');?>" name = "slug" class="slug">
+							<input class="form-control" type="text" value="<?=$slug?>" name = "slug" class="slug">
 						</div>
-						<div class="row2">Url actual:  <b><?php echo site_url(); ?>/?<?php echo get_option('quecodig_slug_link','');?></b></div>
+						<div class="row2">Url actual:  <b><?php echo site_url(); ?>/<?php if($slug != ""){ echo "?".$slug; }else{ echo "wp-admin/"; } ?></b></div>
 						<div class="form-group"><input class="form-control btn" type="submit" class="submit_admin" value="Guardar"></div>
 					</form>
 				</div>
@@ -103,12 +106,26 @@
 	//Fuente: https://wordpress.stackexchange.com/a/233216
 	if(!function_exists('quecodig_error_login_messages')){
 		function quecodig_error_login_messages($error){
-			//check if that's the error you are looking for
-			$pos = strpos($error, 'incorrect');
-			if (is_int($pos)) {
-				//its the right error so you can overwrite it
-				$error = '<strong>ERROR</strong>: El usuario o la contraseña que ingresó no son válidos.';
+			global $errors;
+
+			$err_codes = $errors->get_error_codes();
+
+			// Invalid username.
+			// Default: '<strong>ERROR</strong>: Invalid username. <a href="%s">Lost your password</a>?'
+			if ( in_array( 'invalid_username', $err_codes ) ) {
+				$error = '<strong>ERROR</strong>: Datos incorrectos. <a href="wp-login.php?action=lostpassword&panel-administracion&redirect=false">¿Has olvidado tus datos?</a>';
 			}
+
+			// Invalid email.
+			if ( in_array( 'invalid_email', $err_codes ) ) {
+				$error = '<strong>ERROR</strong>: Datos incorrectos. <a href="wp-login.php?action=lostpassword&panel-administracion&redirect=false">¿Has olvidado tus datos?</a>';
+			}
+
+			// Incorrect password.
+			if ( in_array( 'incorrect_password', $err_codes ) ) {
+				$error = '<strong>ERROR</strong>: Datos incorrectos. <a href="wp-login.php?action=lostpassword&panel-administracion&redirect=false">¿Has olvidado tus datos?</a>';
+			}
+
 			return $error;
 		}
 	}

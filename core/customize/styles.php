@@ -57,28 +57,10 @@ body, #wp-auth-check-wrap #wp-auth-check{
 		}
 	}
 
-	if(!function_exists('quecodig_admin_logo_url')){
-		function quecodig_admin_logo_url() {
-			global $menu;
-			$url = get_admin_url();
-			$menu[0] = array( __('QuéCódigo'), 'read', $url, 'quecodigo-logo', 'quecodigo-logo');
-		}
-	}
-
 	if(!function_exists('quecodig_admin_logo')){
 		function quecodig_admin_logo() {
 			?>
 <style type="text/css">
-#adminmenu a.quecodigo-logo{
-	display: block;
-	background: url(<?php echo plugins_url('assets/img/logo.png', QC_PLUGIN_FILE ); ?>) no-repeat center center;
-	background-size: 140px auto;
-	width: 140px;
-	height: 35px;
-	margin: 0 auto;
-	padding: 10px 0px;
-	padding-bottom: 10px !important;
-}
 .folded #adminmenu a.quecodigo-logo,
 .folded #adminmenu li.menu-top a.quecodigo-logo,
 .folded #adminmenuback, .folded #adminmenuwrap a.quecodigo-logo{

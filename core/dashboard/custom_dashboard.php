@@ -8,7 +8,7 @@
 				if(is_plugin_active( 'woocommerce/woocommerce.php' )){
 					include( 'partials/woocommerce.php' );
 				}
-				include( 'partials/google-analytics-for-wp.php' );
+				//include( 'partials/google-analytics-for-wp.php' );
 				include( 'partials/news-and-events.php' );
 			?>
 		</div>
@@ -22,6 +22,5 @@
 		// Plugin exceptions
 		// Also see _theme-alerts.scss
 		.not( '#gadwp-notice, .rs-update-notice-wrap' );
-		document.getElementById('ga-widget-trigger').click();
 	});
 </script>

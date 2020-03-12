@@ -140,7 +140,7 @@ WordPress version:      ' . $wp_info . '
 Home URL:       ' . home_url() . '
 Site URL:       ' . site_url() . '
 Is SSL:         ' . $is_ssl . '
-Is RTL:         ' . $is_rtl . '                                         
+Is RTL:         ' . $is_rtl . '
 Permalink:      ' . get_option('permalink_structure') . '
 Theme Active:   ' .wp_get_theme()->get("Name"). '
 Theme version:   ' .wp_get_theme()->get("Version"). '
@@ -169,11 +169,8 @@ Debug log
 ==================================================
 ' . $log_debug . '
 ';
-
-
 				$html = sprintf('<textarea readonly="readonly" rows="5" cols="65" style="%4$s" class="%1$s" id="%2$s" name="%2$s">%3$s</textarea>', $args['class'], 'debug_report', $value, 'width:100% !important;height:400px !important');
 				$html .= sprintf('<br><span class="description"> %s</span>', $args['desc']);
-
 				echo $html;
 			}
 		}

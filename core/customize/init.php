@@ -22,8 +22,6 @@
 
 	add_action('login_enqueue_scripts', 'quecodig_custom_login',99);
 
-	add_action('admin_menu', 'quecodig_admin_logo_url');
-
 	add_action('admin_enqueue_scripts', 'quecodig_admin_logo');
 
 	add_action ('admin_enqueue_scripts', 'quecodig_admin_styles');
