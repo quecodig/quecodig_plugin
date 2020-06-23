@@ -27,7 +27,7 @@
 			printf(
 				'<a href="%1$s" target="_blank" class="sg--button button--neutral button--medium"><span class="button__content"><span class="button__text">%2$s</span></span> <span class="screen-reader-text">%3$s</span></a>',
 				/* translators: If a Rosetta site exists (e.g. https://es.wordpress.org/news/), then use that. Otherwise, leave untranslated. */
-				'https://www.quecodigo.com/blog.html',
+				'https://www.quecodigo.com/blog/',
 				__('Blog'),
 				/* translators: accessibility text */
 				__('(opens in a new window)')
@@ -35,7 +35,7 @@
 			printf(
 				'<a href="%1$s" target="_blank" class="sg--button button--neutral button--medium"><span class="button__content"><span class="button__text">%2$s</span></span> <span class="screen-reader-text">%3$s</span></a>',
 				/* translators: If a Rosetta site exists (e.g. https://es.wordpress.org/news/), then use that. Otherwise, leave untranslated. */
-				'https://www.desarrollo.quecodigo.com',
+				'https://www.quecodigo.com/clientes/',
 				__('Support'),
 				/* translators: accessibility text */
 				__('(opens in a new window)')

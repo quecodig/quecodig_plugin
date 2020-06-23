@@ -27,7 +27,7 @@
 
 	if(!function_exists('quecodig_logo_url')){
 		function quecodig_logo_url() {
-			return "https://www.quecodigo.com";
+			return "https://www.quecodigo.com/?utm_source=cliente-wpadmin&utm_medium=bottom-cta";
 		}
 	}
 

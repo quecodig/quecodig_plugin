@@ -9,10 +9,10 @@
 	}
 
 	function quecodig_add_favicon(){
-		$url = plugins_url('assets/img/logo-azul.svg', QC_PLUGIN_FILE );
-		$file_header = get_headers($url);
-		$url = (strpos($file_header[0], '404') === false) ? $url : '';
-		echo "<link rel='icon' href='{$url}' type='image/svg+xml' /> \n";
+		//$url = plugins_url('assets/img/logo-azul.svg', QC_PLUGIN_FILE );
+		//$file_header = get_headers($url);
+		//$url = (strpos($file_header[0], '404') === false) ? $url : '';
+		//echo "<link rel='icon' href='{$url}' type='image/svg+xml' /> \n";
 	}
 
 	function quecodig_replace_footer_version(){

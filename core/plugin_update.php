@@ -3,6 +3,8 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Bloquear acceso de manera directa.
 	}
+
+	$base_name = plugin_basename( QC_PLUGIN_FILE );
 	
 	if(!function_exists('quecodig_plugin_info')){
 		function quecodig_plugin_info( $res, $action, $args ){
@@ -74,6 +76,7 @@
 	if(!function_exists('quecodig_push_update')){
 		function quecodig_push_update( $transient ){
 			global $wp_version;
+			global $base_name;
 
 			if ( empty($transient->checked ) ) {
 				return $transient;
@@ -103,7 +106,7 @@
 				if( $remote && version_compare( PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
 					$res = new stdClass();
 					$res->slug = 'quecodigo';
-					$res->plugin = 'quecodigo/quecodigo.php'; // it could be just YOUR_PLUGIN_SLUG.php if your plugin doesn't have its own directory
+					$res->plugin = $base_name; // it could be just YOUR_PLUGIN_SLUG.php if your plugin doesn't have its own directory
 					$res->new_version = $remote->version;
 					$res->tested = $remote->tested;
 					$res->package = $remote->download_url;
@@ -163,6 +166,7 @@
 	if(!function_exists('quecodig_update_notify')){
 		function quecodig_update_notify() {
 			global $wp_version;
+			global $base_name;
 			$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'info.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 				'timeout' => 10,
 				'headers' => array(
@@ -176,7 +180,7 @@
 				if( $remote && version_compare( PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
 					set_site_transient( 'update_plugins', null );
 					echo '<div class="updated"><p><strong>Hola, tenemos una nueva actualización:</strong>';
-					echo ' Haz clic para <a class="button button-primary" href="' . wp_nonce_url(self_admin_url( 'update.php?action=upgrade-plugin&plugin=quecodigo/quecodigo.php' ), 'upgrade-plugin_quecodigo/quecodigo.php' ) . '">Actualizar</a>';
+					echo ' Haz clic para <a class="button button-primary" href="' . wp_nonce_url(self_admin_url( 'update.php?action=upgrade-plugin&plugin='.$base_name ), 'upgrade-plugin_'.$base_name ) . '">Actualizar</a>';
 					echo '</p></div>';
 				}else{
 					update_option( 'quecodig_warnings', 0 );
@@ -185,7 +189,6 @@
 		}
 	}
 	add_action( 'admin_footer', function(){
-		quecodig_update_notify();
 		if( ! wp_next_scheduled( 'quecodig_update_notify' ) ) {
 			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'quecodig_update_notify' );
 		}
@@ -211,13 +214,14 @@
 	// Remover plugin del directorio de WordPress
 	if(!function_exists('quecodig_update_check')){
 		function quecodig_update_check( $request, $url ) {
+			global $base_name;
 			// Plugin update request.
 			if ( false !== strpos( $url, '//api.wordpress.org/plugins/update-check/1.1/' ) ) {
 
 				// Decode JSON so we can manipulate the array.
 				$data = json_decode( $request['body']['plugins'] );
 				// Remove the Envato Market.
-				unset( $data->plugins->{'quecodigo/quecodigo.php'} );
+				unset( $data->plugins->{$base_name} );
 				// Encode back into JSON and update the response.
 				$request['body']['plugins'] = wp_json_encode( $data );
 			}

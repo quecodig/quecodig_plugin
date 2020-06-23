@@ -14,7 +14,7 @@
 					array(
 						'id'      => 'sp_faq',
 						'title'   => 'Acerca de Soporte Qué Código',
-						'content' => '<h2>Acerca de este plugin.</h2><p>Soporte Qué Código V'.PLUGIN_VERSION.'</p><p>Este plugin es desarrollado y mantenido por <a href="https://www.quecodigo.com" target="_blank">Qué Código</a> para sus clientes, y este contiene mejoras de seguridad, optimización y contacto directo con nosotros.</p><p>Quires saber más visitamos en <a href="https://www.quecodigo.com/" target="_blank">www.quecodigo.com</a></p>'
+						'content' => '<h2>Acerca de este plugin.</h2><p>Soporte Qué Código V'.PLUGIN_VERSION.'</p><p>Este plugin es desarrollado y mantenido por <a href="https://www.quecodigo.com/?utm_source=cliente-wpadmin&utm_medium=bottom-cta" target="_blank">Qué Código</a> para sus clientes, y este contiene mejoras de seguridad, optimización y contacto directo con nosotros.</p><p>Quires saber más visitamos en <a href="https://www.quecodigo.com/?utm_source=cliente-wpadmin&utm_medium=bottom-cta" target="_blank">www.quecodigo.com</a></p>'
 					)
 				);
 

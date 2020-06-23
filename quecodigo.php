@@ -8,7 +8,7 @@
 	Author URI: https://www.quecodigo.com
 	License: GPL2
 	Requires at least: 4.0
-	Tested up to: 5.2.4
+	Tested up to: 5.3
 	Text Domain: QCText
 	Domain Path: /languages/
 	*/
