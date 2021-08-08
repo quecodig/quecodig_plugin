@@ -2,6 +2,9 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Bloquear acceso de manera directa.
 	}
+	//echo get_option('quecodig_code');
+	//echo get_option('quecodig_public');
+	//echo get_option("quecodig_sub");
 ?>
 <div class="wrap quecodig_plugin" style="margin-top: 40px;">
 	<div class="wrap content-api" id="main">
@@ -9,7 +12,7 @@
 			if(isset($_GET["vencido"])):
 		?>
 		<div class="alert warning">
-			<p>Error el id a consultar ya vencio.</p>
+			<p>Error el id a consultar ya vencio, renueva la suscripción.</p>
 			<script>
 				history.pushState({data:true}, 'Titulo', '<?php echo add_query_arg( array( 'page' => 'quecodigo_soporte'), admin_url( 'admin.php' ) ); ?>');
 			</script>
@@ -41,8 +44,8 @@
 					<img src="<?php echo plugins_url( 'assets/img/logo-azul.svg', QC_PLUGIN_FILE ); ?>" alt="">
 				</div>
 				<div class="welcome">
-					<h2>¡Bienvenido al centro de Ayuda!</h2>
-					<p>Aquí encontraras toda la información necesaria para saber manejar y administrar tu sitio web, los datos de usuario se te fueron entregados a la finalización del contrato.</p>
+					<h2>¡Bienvenido al centro de Ayuda de Qué Código!</h2>
+					<p>Aquí encontraras toda la información necesaria para saber manejar y administrar tu sitio web.</p>
 				</div>
 			</div>
 		</div>
@@ -71,7 +74,7 @@
 		<div class="main" id="panel">
 			<button class="accordion">Soporte especializado</button>
 			<div class="panel">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores voluptatibus, at itaque autem ducimus, voluptates perferendis reiciendis, quaerat alias soluta officiis eum odit magni cum recusandae inventore quo tempore incidunt?</p>
+				<p>Tu tiempo de soporte especializado ha finalizado, si deseas ayuda con tu sitio puedes contactarnos para ofrecerte un servicio de soporte al correo <a href="mailto:soporte@quecodigo.com">soporte@quecodigo.com</a>.</p>
 			</div>
 		</div>
 		<?php
@@ -89,7 +92,7 @@
 				<div class="info-log">
 					<h2 class="title">Solicitar Soporte.</h2>
 					<p>Si tienes problemas tecnicos con tu sitio web, hemos preparado un medio por el cual podemos brindarte ayuda y solucionar tu problema.</p>
-					<a onclick="window.chaport.open();" style="cursor:pointer" class="btn">Abrir chat</a>
+					<a href="https://wa.me/+573014486070?text=Hola%20necesito%20ayuda%20con%20mi%20sitio%20web" target="_blank" style="cursor:pointer" class="btn">Abrir chat</a>
 				</div>
 			</div>
 		</div>
@@ -111,7 +114,7 @@
 				$args = array(
 					'method' => 'GET',
 				);
-				$response = wp_remote_request( PLUGIN_API.'request.php', $args );
+				$response = wp_remote_request( QC_PLUGIN_API.'request.php', $args );
 				if(!is_wp_error($response) && ($response['response']['code'] == 200 || $response['response']['code'] == 201)) {
 					$body = json_decode( wp_remote_retrieve_body( $response ) );
 					if(!empty($body)){

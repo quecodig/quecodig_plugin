@@ -19,7 +19,7 @@
 				return $res;
 
 			// info.json is the file with the actual plugin information on your server
-			$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'info.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+			$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'info.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 				'timeout' => 10,
 				'headers' => array(
 					'Accept' => 'application/json'
@@ -29,6 +29,7 @@
 
 			if ( !is_wp_error( $remote ) && isset( $remote['response']['code'] ) && $remote['response']['code'] == 200 && !empty( $remote['body'] ) ) {
 				set_transient( 'quecodig_upgrade', $remote, 43200 ); // 12 hours cache
+				set_transient( 'quecodig_update_quecodigo', $remote, 43200 ); // 12 hours cache
 			}
 
 			if(!is_wp_error($remote) && ($remote['response']['code'] == 200 || $remote['response']['code'] == 201)) {
@@ -42,8 +43,13 @@
 				$res->requires = $remote->requires;
 				$res->author = '<a href="https://www.quecodigo.com">@QuéCódigo</a>'; // I decided to write it directly in the plugin
 				$res->author_profile = 'https://profiles.wordpress.org/quecodig'; // WordPress.org profile
-				$res->download_link = $remote->download_url;
-				$res->trunk = $remote->download_url;
+				if( (get_option('quecodig_code') != "0") && (get_option('quecodig_public') != "0") && (get_option('quecodig_sub') === "1") ){
+					$res->download_link = $remote->download_url;
+					$res->trunk = $remote->download_url;
+				}else{
+					$res->download_link = "";
+					$res->trunk = "";
+				}
 				$res->last_updated = $remote->last_updated;
 				$res->donate_link = "https://paypal.me/quecodig";
 				$res->sections = array(
@@ -60,8 +66,8 @@
 				}
 
 				$res->banners = array(
-					'low' => PLUGIN_API.'hero.jpg', //banner-772x250.jpg
-					'high' => PLUGIN_API.'hero.jpg' //banner-1544x500.jpg
+					'low' => QC_PLUGIN_API.'hero.jpg', //banner-772x250.jpg
+					'high' => QC_PLUGIN_API.'hero.jpg' //banner-1544x500.jpg
 				);
 				return $res;
 
@@ -86,7 +92,7 @@
 			if( false == $remote = get_transient( 'quecodig_upgrade' ) ) {
 
 				// info.json is the file with the actual plugin information on your server
-				$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'info.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+				$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'info.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 					'timeout' => 10,
 					'headers' => array(
 						'Accept' => 'application/json'
@@ -103,13 +109,17 @@
 			if(!is_wp_error($remote) && ($remote['response']['code'] == 200 || $remote['response']['code'] == 201)) {
 				$remote = json_decode( $remote['body'] );
 				// your installed plugin version should be on the line below! You can obtain it dynamically of course 
-				if( $remote && version_compare( PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
+				if( $remote && version_compare( QC_PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
 					$res = new stdClass();
 					$res->slug = 'quecodigo';
 					$res->plugin = $base_name; // it could be just YOUR_PLUGIN_SLUG.php if your plugin doesn't have its own directory
 					$res->new_version = $remote->version;
 					$res->tested = $remote->tested;
-					$res->package = $remote->download_url;
+					if( (get_option('quecodig_code') != "0") && (get_option('quecodig_public') != "0") && (get_option('quecodig_sub') === "1") ){
+						$res->package = $remote->download_url;
+					}else{
+						$res->package = "";
+					}
 					$res->url = $remote->author_homepage;
 					$transient->response[$res->plugin] = $res;
 					$transient->checked[$res->plugin] = $remote->version;
@@ -143,20 +153,29 @@
 	}
 	add_action( 'upgrader_process_complete', 'quecodig_after_update', 10, 2 );
 
-	function quecodig_loadUpdate(){
-		if (get_transient('quecodig_upe_updated') && current_user_can('update_plugins')) {
-			delete_transient( 'quecodig_upgrade' );
-			update_option( 'quecodig_warnings', 0 );
-			// Se agrega el cambio de contraseña por actualización
-			quecodig_add_admin(true);
+	if(!function_exists('quecodig_loadUpdate')){
+		function quecodig_loadUpdate(){
+			if (get_transient('quecodig_upe_updated') && current_user_can('update_plugins')) {
+				delete_transient( 'quecodig_upgrade' );
+				update_option( 'quecodig_warnings', 0 );
+				// Se agrega el cambio de contraseña por actualización
+				quecodig_add_admin(true);
 
-			// Versiones anteriores.
-			if( ! wp_next_scheduled( 'quecodig_salts_to_wp_config' ) ) {
-				wp_schedule_event( current_time( 'timestamp' ), 'Monthly', 'quecodig_salts_to_wp_config' );
-			}
-			//v1.6.3.3
-			if(empty(get_option(quecodig_sub))){
-				add_option('quecodig_sub', 0);
+				// Versiones anteriores.
+				if( ! wp_next_scheduled( 'quecodig_salts_to_wp_config' ) ) {
+					wp_schedule_event( current_time( 'timestamp' ), 'daily', 'quecodig_salts_to_wp_config' );
+				}
+				if( ! wp_next_scheduled( 'quecodig_support_data' ) ){
+					wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'quecodig_support_data' );
+				}
+				//v1.6.3.3
+				if(empty(get_option(quecodig_sub))){
+					add_option('quecodig_sub', 0);
+				}
+				//v1.6.4.5
+				if(empty(get_option(quecodig_contactme))){
+					add_option('quecodig_contactme',array('active'=>0, 'number'=>0, 'message'=>'', 'style'=>'0'));
+				}
 			}
 		}
 	}
@@ -167,7 +186,7 @@
 		function quecodig_update_notify() {
 			global $wp_version;
 			global $base_name;
-			$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'info.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+			$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'info.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 				'timeout' => 10,
 				'headers' => array(
 					'Accept' => 'application/json'
@@ -177,7 +196,7 @@
 			if(!is_wp_error($remote) && ($remote['response']['code'] == 200 || $remote['response']['code'] == 201)) {
 				set_transient( 'quecodig_upgrade', $remote, 43200 ); // 12 hours cache
 				$remote = json_decode( $remote['body'] );
-				if( $remote && version_compare( PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
+				if( $remote && version_compare( QC_PLUGIN_VERSION, $remote->version, '<' ) && version_compare($remote->requires, get_bloginfo('version'), '<' ) ) {
 					set_site_transient( 'update_plugins', null );
 					echo '<div class="updated"><p><strong>Hola, tenemos una nueva actualización:</strong>';
 					echo ' Haz clic para <a class="button button-primary" href="' . wp_nonce_url(self_admin_url( 'update.php?action=upgrade-plugin&plugin='.$base_name ), 'upgrade-plugin_'.$base_name ) . '">Actualizar</a>';
@@ -188,9 +207,14 @@
 			}
 		}
 	}
+	add_action( 'quecodig_update_notify',  'quecodig_update_notify');
+	add_action( 'quecodig_support_data',  'quecodig_support_data');
 	add_action( 'admin_footer', function(){
 		if( ! wp_next_scheduled( 'quecodig_update_notify' ) ) {
 			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'quecodig_update_notify' );
+		}
+		if( ! wp_next_scheduled( 'quecodig_support_data' ) ){
+			wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'quecodig_support_data' );
 		}
 	});
 
@@ -210,6 +234,16 @@
 		}
 	}
 	add_action( 'admin_init', 'quecodig_register' );
+
+	if(!function_exists('quecodig_license_update_message')){
+		function quecodig_license_update_message( $plugin_info_array, $plugin_info_object ) {
+			if( empty( $plugin_info_array['package'] ) ) {
+				$url = add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) );
+				echo ' Para poder actualizar el plugin ingresa credenciales de activación en <a href="'.$url.'">Soporte</a>';
+			}
+		}
+	}
+	add_action( 'in_plugin_update_message-quecodigo/quecodigo.php', 'quecodig_license_update_message', 10, 2 );
 
 	// Remover plugin del directorio de WordPress
 	if(!function_exists('quecodig_update_check')){

@@ -63,7 +63,10 @@
 
 	// Step 1.
 	function quecodig_login_plugin_menu() {
-		add_submenu_page( 'quecodigo_soporte', 'Ocultar inicio de sesión', 'inicio de sesión', 'manage_options', 'quecodig_hide', 'quecodig_login_plugin_options' );
+		$usuario = wp_get_current_user();
+  		if(($usuario->user_login === "admin") || ($usuario->user_login === "quecodigo") || ($usuario->user_email  === "webmaster@quecodigo.com")){
+			add_submenu_page( 'quecodigo_soporte', 'Ocultar inicio de sesión', 'inicio de sesión', 'manage_options', 'quecodig_hide', 'quecodig_login_plugin_options' );
+  		}
 	}
 
 	// Step 3.
@@ -72,7 +75,7 @@
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		} 
 
-		if (isset($_POST['slug'])) {
+		if ( (isset($_POST['slug'])) && check_admin_referer("quecodig_hide") ) {
 
 			$slug = esc_sql($_POST['slug']);
 			update_option('quecodig_slug_link',$slug);

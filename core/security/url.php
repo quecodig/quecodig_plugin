@@ -22,6 +22,14 @@
 			remove_action('wp_head', 'rel_canonical');
 			add_action('wp_head', 'quecodig_rel_canonical');
 		}
+
+		//Redirigir de /?amp a su canonical
+		add_action( 'template_redirect', function() {
+			if ( isset( $_GET['amp'] ) ) {
+				wp_safe_redirect( remove_query_arg( 'amp' ), 301 );
+				exit;
+			}
+		});
 	}
 
 	function quecodig_rel_canonical() {

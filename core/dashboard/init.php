@@ -6,6 +6,8 @@
 	include (QC_PLUGIN_PATH ."core/dashboard/dashboard.php");
 	include (QC_PLUGIN_PATH ."core/dashboard/help.php");
 
+	add_action( 'admin_head' , 'quecodig_helper' );
+
 	//*****Dashboard*****//
 	// Add the new submenu page.
 	add_action( 'admin_menu', 'quecodig_admin_menu', 1 );
@@ -22,6 +24,3 @@
 
 	add_action( 'wp_before_admin_bar_render', 'quecodig_add_dashboard_admin_bar_menu_item' );
 	add_action( 'wp_before_admin_bar_render', 'quecodig_reorder_admin_bar' );
-
-	//*****Helper*****//
-	add_action( 'admin_head' , 'quecodig_helper' );

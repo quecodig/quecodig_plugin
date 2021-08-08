@@ -35,7 +35,7 @@
 		if( false == $remote = get_transient( 'quecodig_mu_upgrade' ) ) {
 
 			// info.json is the file with the actual plugin information on your server
-			$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'prueba.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+			$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'prueba.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 				'timeout' => 10,
 				'headers' => array(
 					'Accept' => 'application/json'
@@ -84,7 +84,7 @@
 			return $res;
 
 		// info.json is the file with the actual plugin information on your server
-		$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'prueba.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+		$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'prueba.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 			'timeout' => 10,
 			'headers' => array(
 				'Accept' => 'application/json'
@@ -125,8 +125,8 @@
 			}
 
 			$res->banners = array(
-				'low' => PLUGIN_API.'hero.jpg', //banner-772x250.jpg
-				'high' => PLUGIN_API.'hero.jpg' //banner-1544x500.jpg
+				'low' => QC_PLUGIN_API.'hero.jpg', //banner-772x250.jpg
+				'high' => QC_PLUGIN_API.'hero.jpg' //banner-1544x500.jpg
 			);
 			return $res;
 
@@ -138,7 +138,7 @@
 	if(!function_exists('quecodig_mu_update_notify')){
 		function quecodig_mu_update_notify() {
 			global $wp_version;
-			$remote = wp_remote_get( wp_nonce_url(PLUGIN_API.'prueba.json?ver='.PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
+			$remote = wp_remote_get( wp_nonce_url(QC_PLUGIN_API.'prueba.json?ver='.QC_PLUGIN_VERSION.'&public='.get_option('quecodig_public').'&code='.get_option('quecodig_code')), array(
 				'timeout' => 10,
 				'headers' => array(
 					'Accept' => 'application/json'

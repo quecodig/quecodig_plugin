@@ -11,7 +11,7 @@
 			<div class="flex flex--align-center flex--gutter-none flex--direction-column flex--margin-none">
 
 				<span class="icon" style="width: 46px; height: 46px">
-					<img src="<?php echo plugins_url( 'assets/img/web.svg?qcv='.PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
+					<img src="<?php echo plugins_url( 'assets/img/web.svg?qcv='.QC_PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
 				</span>
 
 				<h4 class="title title--density-none title--level-4 typography typography--weight-bold with-color with-color--color-darkest sg-margin-top-medium">Ver página</h4>
@@ -35,7 +35,7 @@
 		<div class="container container--padding-large container--elevation-1">
 			<div class="flex flex--align-center flex--gutter-none flex--direction-column flex--margin-none">
 				<span class="icon" style="width: 46px; height: 46px">
-					<img src="<?php echo plugins_url( 'assets/img/diseno-web.svg?qcv='.PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
+					<img src="<?php echo plugins_url( 'assets/img/diseno-web.svg?qcv='.QC_PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
 				</span>
 				<h4 class="title title--density-none title--level-4 typography typography--weight-bold with-color with-color--color-darkest sg-margin-top-medium">
 					Administrar Entradas
@@ -60,7 +60,7 @@
 		<div class="container container--padding-large container--elevation-1">
 			<div class="flex flex--align-center flex--gutter-none flex--direction-column flex--margin-none">
 				<span class="icon" style="width: 48px; height: 46px;">
-					<img src="<?php echo plugins_url( 'assets/img/caja.svg?qcv='.PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
+					<img src="<?php echo plugins_url( 'assets/img/caja.svg?qcv='.QC_PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
 				</span>
 				<h4 class="title title--density-none title--level-4 typography typography--weight-bold with-color with-color--color-darkest sg-margin-top-medium">
 					Administrar productos

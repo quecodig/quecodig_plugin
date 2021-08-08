@@ -44,8 +44,8 @@
 }
 
 .quecodig_plugin .content-api .main#home{
-	background: url("../img/header-bg.jpg");
-	background-size: 100%;
+	background: url("../img/header-bg.jpg") center;
+	background-size: cover;
 	position: relative;
 }
 

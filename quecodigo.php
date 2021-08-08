@@ -3,12 +3,12 @@
 	Plugin Name: Soporte By Qué Código
 	Plugin URI: https://www.quecodigo.com/
 	Description: Qué Código es un conjunto de herramientas ligeras y sencillas que facilitan el desarrollo y uso de WordPress, funciones que incluyen <strong>Estilos, Seguridad, Optimización, seguimiento con Google Analytics y soporte</strong>.
-	Version: 1.6.4.2
+	Version: 1.6.5.0
 	Author: Qué Código
 	Author URI: https://www.quecodigo.com
 	License: GPL2
 	Requires at least: 4.0
-	Tested up to: 5.3
+	Tested up to: 5.7.3
 	Text Domain: QCText
 	Domain Path: /languages/
 	*/
@@ -22,15 +22,15 @@
 	}
 
 	//Init
-	if( ! defined( 'PLUGIN_VERSION' ) ){
-		define("PLUGIN_VERSION", "1.6.4.2");
+	if( ! defined( 'QC_PLUGIN_VERSION' ) ){
+		define("QC_PLUGIN_VERSION", "1.6.5.0");
 	}
 	// Define "FILE" del plugin
 	if ( ! defined( 'QC_PLUGIN_FILE' ) ) {
 		define( 'QC_PLUGIN_FILE', __FILE__ );
 	}
-	if ( ! defined( 'PLUGIN_API' ) ) {
-		define("PLUGIN_API", "https://www.api.quecodigo.com/plugins/quecodigo/");
+	if ( ! defined( 'QC_PLUGIN_API' ) ) {
+		define("QC_PLUGIN_API", "https://www.api.quecodigo.com/plugins/quecodigo/");
 	}
 	if( ! defined( 'QC_PLUGIN_PATH' ) ){
 		define('QC_PLUGIN_PATH', realpath( plugin_dir_path( QC_PLUGIN_FILE ) ) . '/' );
@@ -78,6 +78,7 @@
 			add_option('quecodig_activation_welcome', 'pending');
 			add_option('quecodig_slug_link', 'panel-administracion', '', 'yes');
 			add_option('quecodig_warnings', 0);
+			add_option('quecodig_contactme',array('active'=>0, 'number'=>'', 'message'=>'', 'style'=>'0'));
 			if(empty(get_option('quecodig_code')) && empty(get_option('quecodig_public')) && empty(get_option("quecodig_sub"))){
 				add_option('quecodig_public', 0);
 				add_option('quecodig_code', 0);
@@ -86,15 +87,23 @@
 			quecodig_htaccess();
 			if( ! wp_next_scheduled( 'quecodig_salts_to_wp_config' ) ) {
 				quecodig_salts_to_wp_config();
-				wp_schedule_event( current_time( 'timestamp' ), 'Monthly', 'quecodig_salts_to_wp_config' );
+				wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'quecodig_salts_to_wp_config' );
+			}
+			if( ! wp_next_scheduled( 'quecodig_support_data' ) ){
+				wp_schedule_event( current_time( 'timestamp' ), 'monthly', 'quecodig_support_data' );
 			}
 		}
 	);
 	register_deactivation_hook( 
 		__FILE__, function() {
 			wp_clear_scheduled_hook( 'quecodig_salts_to_wp_config' );
+			wp_clear_scheduled_hook( 'quecodig_support_data' );
+			delete_option('quecodig_contactme');
+			delete_option('quecodig_slug_link');
+			delete_option('quecodig_warnings');
 			delete_option('quecodig_public');
 			delete_option('quecodig_code');
+			delete_option('quecodig_sub');
 			quecodig_delete_htaccess();
 			flush_rewrite_rules();
 		}

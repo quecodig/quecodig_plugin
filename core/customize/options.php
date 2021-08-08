@@ -50,7 +50,7 @@
 			if ( strpos( $file, 'quecodigo.php' ) !== false ) {
 				$new_links = array(
 					'donate' => '<a href="https://www.paypal.me/quecodig" target="_blank">Donar</a>',
-					'support' => '<a onclick="window.chaport.open();" style="cursor:pointer">Chat</a>'
+					//'support' => '<a onclick="window.chaport.open();" style="cursor:pointer">Chat</a>'
 				);
 				$links = array_merge( $links, $new_links );
 			}

@@ -19,7 +19,7 @@
 					</div>
 					<div class="box box--sm-3 typography--align-center">
 						<span class="icon sg--hide-mobile" style="width: 80px">
-							<img src="<?php echo plugins_url( 'assets/img/capacitacion.svg?qcv='.PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
+							<img src="<?php echo plugins_url( 'assets/img/capacitacion.svg?qcv='.QC_PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
 						</span>
 					</div>
 				</div>
@@ -38,13 +38,13 @@
 						<p class="text text--size-medium typography typography--weight-regular with-color with-color--color-dark">
 							Si tienes problemas tecnicos con tu sitio web, hemos preparado un medio por el cual podemos brindarte ayuda y solucionar tu problema.
 						</p>
-						<a onclick="window.chaport.open();" style="cursor:pointer" class="link sg-margin-top-x-small">
-							¡Abrir chat de ayuda!
+						<a href="https://wa.me/+573014486070?text=Hola%20necesito%20ayuda%20con%20mi%20sitio%20web" target="_blank" class="link sg-margin-top-x-small">
+							¡Contactanos para mas ayuda!
 						</a>
 					</div>
 					<div class="box box--sm-3 typography--align-center">
 						<span class="icon sg--hide-mobile" style="width: 80px">
-							<img src="<?php echo plugins_url( 'assets/img/apoyo-tecnico.svg?qcv='.PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
+							<img src="<?php echo plugins_url( 'assets/img/apoyo-tecnico.svg?qcv='.QC_PLUGIN_VERSION, QC_PLUGIN_FILE ); ?>" alt="">
 						</span>
 					</div>
 				</div>

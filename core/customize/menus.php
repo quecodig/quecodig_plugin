@@ -63,13 +63,22 @@
 			if ($current_user->ID != 1) {
 				remove_menu_page( 'jetpack' );                    //Jetpack*
 				remove_menu_page( 'widgets.php' );                //Appearance
-				remove_menu_page( 'edit.php?post_type=page' );    //Plugins
+				//remove_menu_page( 'edit.php?post_type=page' );    //Plugins
 				remove_menu_page( 'plugins.php' );                //Plugins
 				remove_menu_page( 'tools.php' );                  //Tools
 				remove_menu_page( 'options-general.php' );        //Settings
 				remove_menu_page( 'edit.php?post_type=elementor_library' );
 				remove_menu_page( 'edit.php?post_type=elementor-hf' );
 				remove_menu_page( 'edit.php?post_type=portfolio' );
+				remove_menu_page( 'review-widgets-for-tripadvisor/settings.php' );
+				remove_menu_page( 'native-performance' );
+				remove_menu_page( 'machete' );
+				remove_menu_page( 'envato-market' );
+				remove_menu_page( 'sg-cachepress' );
+				remove_menu_page( 'sg-security' );
+
+				remove_submenu_page( 'go_elementor_pro', 'admin.php' );
+
 				remove_submenu_page('index.php', 'update-core.php');
 				remove_submenu_page('themes.php', 'theme-editor.php');
 				remove_submenu_page('themes.php', 'widgets.php');
@@ -102,8 +111,7 @@
 
 				global $pagenow;
 				$pg = $pagenow;
-				if(	$pg === 'edit.php?post_type=page' ||
-					$pg === 'themes.php' ||
+				if(	$pg === 'themes.php' ||
 					$pg === 'customize.php' ||
 					$pg === 'widgets.php' ||
 					$pg === 'plugins.php' ||

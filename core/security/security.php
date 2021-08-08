@@ -87,6 +87,7 @@
 	//Reporter
 	if(!function_exists('quecodig_debug_report')){
 		function quecodig_debug_report($args) {
+			global $wpdb;
 			global $wp_version;
 			if($args == true){
 				/* Get from WooCommerce by WooThemes http://woothemes.com  */
@@ -95,6 +96,7 @@
 					$active_plugins = array_merge($active_plugins, get_site_option('active_sitewide_plugins', array()));
 
 				$active_plugins = array_map('strtolower', $active_plugins);
+				$count_active_plugins =  sizeof($active_plugins);
 				$pp_plugins = array();
 
 				foreach ($active_plugins as $plugin) {
@@ -112,6 +114,8 @@
 				$wp_debug = ( defined('WP_DEBUG') && WP_DEBUG ) ? 'true' : 'false';
 				$is_ssl = ( is_ssl() ) ? 'true' : 'false';
 				$is_rtl = ( is_rtl() ) ? 'true' : 'false';
+				$count_users = count_users();
+				$count_posts = wp_count_posts();
 				$fsockopen = ( function_exists('fsockopen') ) ? 'true' : 'false';
 				$curl = ( function_exists('curl_init') ) ? 'true' : 'false';
 				$max_upload_size = (function_exists('size_format')) ? size_format(wp_max_upload_size()) : wp_convert_bytes_to_hr(wp_max_upload_size());
@@ -144,14 +148,21 @@ Is RTL:         ' . $is_rtl . '
 Permalink:      ' . get_option('permalink_structure') . '
 Theme Active:   ' .wp_get_theme()->get("Name"). '
 Theme version:   ' .wp_get_theme()->get("Version"). '
-Qué Código version:      ' .PLUGIN_VERSION. '
+Users:			' . $count_users["total_users"] . '
+Published post:	' . $count_posts->publish . '
+Qué Código version:      ' .QC_PLUGIN_VERSION. '
 
 ==================================================
 Server Environment
 ==================================================
 PHP Version:            ' . $php_info . '
+Operating System:		' . php_uname('s') . '
+Server Hostname:		' . php_uname( 'n' ) . '
+Server Protocol:		' . $_SERVER['SERVER_PROTOCOL'] . '
 Server Software:        ' . $_SERVER['SERVER_SOFTWARE'] . '
-WP Max Upload Size: ' . $max_upload_size . '
+Server Administrator:	' . $_SERVER['GATEWAY_INTERFACE'] . '
+MySql Version:			' . $wpdb->db_version() . '
+WP Max Upload Size:	' . $max_upload_size . '
 Server upload_max_filesize:     ' . $max_server_upload . '
 Server post_max_size:   ' . $post_max_size . '
 WP Memory Limit:        ' . WP_MEMORY_LIMIT . '
@@ -160,7 +171,7 @@ CURL:               ' . $curl . '
 fsockopen:          ' . $fsockopen . '
 
 ==================================================
-Active plugins   
+Active plugins ('. $count_active_plugins .')  
 ==================================================
 ' . $plugin_list . '
 
@@ -169,8 +180,8 @@ Debug log
 ==================================================
 ' . $log_debug . '
 ';
-				$html = sprintf('<textarea readonly="readonly" rows="5" cols="65" style="%4$s" class="%1$s" id="%2$s" name="%2$s">%3$s</textarea>', $args['class'], 'debug_report', $value, 'width:100% !important;height:400px !important');
-				$html .= sprintf('<br><span class="description"> %s</span>', $args['desc']);
+				@$html = sprintf('<textarea readonly="readonly" rows="5" cols="65" style="%4$s" class="%1$s" id="%2$s" name="%2$s">%3$s</textarea>', $args['class'], 'debug_report', $value, 'width:100% !important;height:400px !important');
+				@$html .= sprintf('<br><span class="description"> %s</span>', $args['desc']);
 				echo $html;
 			}
 		}

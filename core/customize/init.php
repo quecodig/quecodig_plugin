@@ -2,29 +2,35 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Bloquear acceso de manera directa.
 	}
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-	include (QC_PLUGIN_PATH ."core/customize/text.php");
 	include (QC_PLUGIN_PATH ."core/customize/menus.php");
 	include (QC_PLUGIN_PATH ."core/customize/styles.php");
 	include (QC_PLUGIN_PATH ."core/customize/options.php");
+	include (QC_PLUGIN_PATH ."core/customize/contactme.php");
+	include (QC_PLUGIN_PATH ."core/customize/site_health.php");
 
-	//*****Text*****//
-	add_action( 'admin_menu', 'quecodig_rename_menu_woo', 999 );
+	//*****woocommerce*****//
+	if(is_plugin_active( 'woocommerce/woocommerce.php' ) ){
+		include (QC_PLUGIN_PATH ."core/customize/woocommerce.php");
+
+		add_action( 'admin_menu', 'quecodig_rename_menu_woo', 999 );
+	}
 
 	//*****Styles*****//
-	add_action('admin_head', 'quecodig_esquema_color');
+	add_action( 'admin_head', 'quecodig_esquema_color');
 
-	add_action('admin_head', 'quecodig_add_favicon');
+	add_action( 'admin_head', 'quecodigo_contactme_style');
 
-	add_filter('update_footer', 'quecodig_replace_footer_version', 999);
+	add_filter( 'update_footer', 'quecodig_replace_footer_version', 999);
 
-	add_action('wp_head', 'quecodig_bar_color');
+	add_action( 'wp_head', 'quecodig_bar_color');
 
-	add_action('login_enqueue_scripts', 'quecodig_custom_login',99);
+	add_action( 'login_enqueue_scripts', 'quecodig_custom_login',99);
 
-	add_action('admin_enqueue_scripts', 'quecodig_admin_logo');
+	add_action( 'admin_enqueue_scripts', 'quecodig_admin_logo');
 
-	add_action ('admin_enqueue_scripts', 'quecodig_admin_styles');
+	add_action( 'admin_enqueue_scripts', 'quecodig_admin_styles');
 
 	add_action( 'admin_enqueue_scripts', 'quecodig_admin_bar_theme_style' );
 
@@ -46,7 +52,7 @@
 
 	add_action( 'wp_before_admin_bar_render', 'quecodig_wp_remove', 0 );
 
-	add_action('admin_bar_menu', 'quecodig_toolbar', 999);
+	add_action( 'admin_bar_menu', 'quecodig_toolbar', 999);
 
 	add_action( 'wp_before_admin_bar_render', 'quecodig_remove_links', 999 );
 
@@ -57,3 +63,9 @@
 	</script>
 	<?php
 	});
+
+	//*****Contactme*****//
+	add_action( 'admin_menu', 'quecodig_contacme_plugin_menu' );
+
+	add_action( 'wp_enqueue_scripts', 'quecodigo_contactme_style');
+	add_action( 'wp_footer', 'quecodigo_contactme_dialog_on_front');

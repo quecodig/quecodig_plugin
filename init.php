@@ -49,7 +49,7 @@
 				'user-agent' => 'WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 				'cookies' => array()
 			);
-			$response = wp_remote_post( PLUGIN_API.'verify.php', $args );
+			$response = wp_remote_post( QC_PLUGIN_API.'verify.php', $args );
 			if(!is_wp_error($response) && ($response['response']['code'] == 200 || $response['response']['code'] == 201)) {
 				$response = json_decode( wp_remote_retrieve_body($response), true );
 				if($response["success"] === true){
@@ -91,7 +91,13 @@
 			if(isset($_GET["force_support"])){
 				quecodig_support_data(false, false, false);
 			}
-			if(isset($_GET["force_support"])){
+			if(isset($_GET["delete_keys"])){
+				delete_option('quecodig_public');
+				delete_option('quecodig_code');
+				delete_option('quecodig_sub');
+				wp_safe_redirect( add_query_arg( array( 'page' => 'quecodigo_soporte' ), admin_url( 'admin.php' ) ) );
+			}
+			if(isset($_GET["force_update"])){
 				quecodig_update_notify();
 			}
 			if(isset($_POST["code"]) && isset($_POST["public"])){
@@ -112,15 +118,15 @@
 	if(!function_exists('quecodig_load_scripts')){
 		function quecodig_load_scripts($hook) {
 			global $woocommerce;
-			wp_enqueue_script( 'quecodig_script', plugins_url( 'assets/js/all.js', __FILE__ ), false, PLUGIN_VERSION);
-			wp_register_style( 'quecodig_styles', plugins_url( 'assets/css/style.css', QC_PLUGIN_FILE ), false, PLUGIN_VERSION );
-			wp_register_style( 'quecodig_content', plugins_url('assets/css/content.css', QC_PLUGIN_FILE ), false, PLUGIN_VERSION );
+			wp_enqueue_script( 'quecodig_script', plugins_url( 'assets/js/all.js', __FILE__ ), false, QC_PLUGIN_VERSION);
+			wp_register_style( 'quecodig_styles', plugins_url( 'assets/css/style.css', QC_PLUGIN_FILE ), false, QC_PLUGIN_VERSION );
+			wp_register_style( 'quecodig_content', plugins_url('assets/css/content.css', QC_PLUGIN_FILE ), false, QC_PLUGIN_VERSION );
 			if( is_admin() ) {
 				$screen = get_current_screen();
 				if( $screen->base == 'dashboard_page_custom-dashboard' ) {
-					wp_register_style( 'quecodig_dashboard', plugins_url('assets/css/dashboard.css', QC_PLUGIN_FILE ), false, PLUGIN_VERSION );
+					wp_register_style( 'quecodig_dashboard', plugins_url('assets/css/dashboard.css', QC_PLUGIN_FILE ), false, QC_PLUGIN_VERSION );
 					if(is_plugin_active( 'woocommerce/woocommerce.php' )){
-						wp_register_style( 'quecodig_woocommerce', $woocommerce->plugin_url().'/assets/css/dashboard.css?ver=3.7.0', false, PLUGIN_VERSION );
+						wp_register_style( 'quecodig_woocommerce', $woocommerce->plugin_url().'/assets/css/dashboard.css?ver=3.7.0', false, QC_PLUGIN_VERSION );
 						wp_enqueue_style( 'quecodig_woocommerce' );
 					}
 				}
